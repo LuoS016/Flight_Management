@@ -12,8 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MainInterface* a=new MainInterface();
-    a->show();
 }
 MainWindow::~MainWindow()
 {
