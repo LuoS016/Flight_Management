@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     MainInterface* a=new MainInterface();
-    a->show();
+    //a->show();
 }
 MainWindow::~MainWindow()
 {
@@ -70,6 +70,10 @@ void MainWindow::on_log_in_clicked()
     bool ok=checkUser(username,password);
     if(ok){
         QMessageBox::information(this, "成功", "登录成功!");
+        MainInterface* a=new MainInterface();
+        a->setAttribute(Qt::WA_DeleteOnClose);
+        a->show();
+        this->close();
     }
     else{
         QMessageBox::warning(this, "失败", "用户名或密码错误!");
@@ -81,5 +85,6 @@ void MainWindow::on_sign_in_clicked()
     Sign_in *s=new Sign_in();
     s->setAttribute(Qt::WA_DeleteOnClose);
     s->show();
+
 }
 

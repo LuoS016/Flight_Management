@@ -8,30 +8,11 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += \
-    main.cpp \
-<<<<<<< HEAD
-=======
-    maininterface.cpp \
->>>>>>> howbirdfly/feature
-    mainwindow.cpp \
-    sign_in.cpp
+SOURCES += *.cpp
 
-HEADERS += \
-<<<<<<< HEAD
-=======
-    maininterface.h \
->>>>>>> howbirdfly/feature
-    mainwindow.h \
-    sign_in.h
+HEADERS += *.h
 
-FORMS += \
-<<<<<<< HEAD
-=======
-    maininterface.ui \
->>>>>>> howbirdfly/feature
-    mainwindow.ui \
-    sign_in.ui
+FORMS += *.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
