@@ -1,0 +1,13 @@
+debug/MainWindow.o
+debug/deal.o
+debug/main.o
+debug/sign_in.o
+debug/single_center.o
+debug/order_dialog.o
+debug/userprofile.o
+debug/moc_MainWindow.o
+debug/moc_deal.o
+debug/moc_sign_in.o
+debug/moc_single_center.o
+debug/moc_order_dialog.o
+debug/moc_userprofile.o
