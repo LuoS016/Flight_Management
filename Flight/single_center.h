@@ -22,6 +22,7 @@ signals:
 private slots:
 
     void onCancelOrder();
+    void onDeleteOrder();
     void onViewOrder();
     void on_btn_back_clicked();
 private:

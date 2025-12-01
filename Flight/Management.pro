@@ -13,6 +13,7 @@ SOURCES += \
     deal.cpp \
     edit_infor.cpp \
     main.cpp \
+    passenger.cpp \
     sign_in.cpp \
     single_center.cpp \
     order_dialog.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 HEADERS += \
     MainWindow.h \
     deal.h \
+    passenger.h \
     edit_infor.h \
     sign_in.h \
     single_center.h \
@@ -30,6 +32,7 @@ HEADERS += \
 FORMS += \
     MainWindow.ui \
     deal.ui \
+    passenger.ui \
     edit_infor.ui \
     sign_in.ui \
     single_center.ui \

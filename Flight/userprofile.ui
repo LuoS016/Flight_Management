@@ -159,9 +159,11 @@ QLineEdit[readOnly=&quot;true&quot;] {
    </property>
    <property name="frameShape">
     <enum>QFrame::Shape::StyledPanel</enum>
+    <enum>QFrame::StyledPanel</enum>
    </property>
    <property name="frameShadow">
     <enum>QFrame::Shadow::Raised</enum>
+    <enum>QFrame::Raised</enum>
    </property>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
@@ -265,9 +267,11 @@ QLineEdit[readOnly=&quot;true&quot;] {
    </property>
    <property name="frameShape">
     <enum>QFrame::Shape::StyledPanel</enum>
+    <enum>QFrame::StyledPanel</enum>
    </property>
    <property name="frameShadow">
     <enum>QFrame::Shadow::Raised</enum>
+    <enum>QFrame::Raised</enum>
    </property>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
@@ -314,8 +318,11 @@ QLineEdit[readOnly=&quot;true&quot;] {
      <rect>
       <x>630</x>
       <y>40</y>
+      <x>590</x>
+      <y>30</y>
       <width>271</width>
       <height>311</height>
+      <height>351</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -337,6 +344,13 @@ QLineEdit[readOnly=&quot;true&quot;] {
       <widget class="QPushButton" name="pushButton_9">
        <property name="text">
         <string>注销</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_10">
+       <property name="text">
+        <string>乘客信息</string>
        </property>
       </widget>
      </item>
