@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 269024b (完全修复了更换头像功能)
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
@@ -43,11 +46,20 @@ void ConnectDatabase(){
     }
 }
 bool checkUserU(QString &username,QString &password){
+<<<<<<< HEAD
     if (!QSqlDatabase::database().isOpen()) {
         qDebug() << "请先连接数据库！";
         return false;
     }
     QSqlQuery query;
+=======
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        qDebug() << "请先连接数据库！";
+        return false;
+    }
+    QSqlQuery query(db);  // 显式指定数据库连接
+>>>>>>> 269024b (完全修复了更换头像功能)
     QString sql="SELECT Username, PWord FROM users where Username=? AND PWord=?";
     query.prepare(sql);
     query.addBindValue(username);
@@ -59,11 +71,20 @@ bool checkUserU(QString &username,QString &password){
     return query.next();
 }
 bool checkUserI(QString &ID,QString &password){
+<<<<<<< HEAD
     if (!QSqlDatabase::database().isOpen()) {
         qDebug() << "请先连接数据库！";
         return false;
     }
     QSqlQuery query;
+=======
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        qDebug() << "请先连接数据库！";
+        return false;
+    }
+    QSqlQuery query(db);  // 显式指定数据库连接
+>>>>>>> 269024b (完全修复了更换头像功能)
     QString sql="SELECT IDCard, PWord FROM users where IDCard=? AND PWord=?";
     query.prepare(sql);
     query.addBindValue(ID);
@@ -75,11 +96,20 @@ bool checkUserI(QString &ID,QString &password){
     return query.next();
 }
 QString GetUserID(QString &input,QString &password){
+<<<<<<< HEAD
     if (!QSqlDatabase::database().isOpen()) {
         qDebug() << "请先连接数据库！";
         return QString();
     }
     QSqlQuery query;
+=======
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        qDebug() << "请先连接数据库！";
+        return QString();
+    }
+    QSqlQuery query(db);  // 显式指定数据库连接
+>>>>>>> 269024b (完全修复了更换头像功能)
     query.prepare("SELECT UserID FROM users where Username=? AND PWord=?");
     query.addBindValue(input);
     query.addBindValue(password);
@@ -127,6 +157,7 @@ void MainWindow::on_sign_in_clicked()
 }
 
 
+<<<<<<< HEAD
 =======
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -257,3 +288,5 @@ void MainWindow::on_sign_in_clicked()
 
 
 >>>>>>> 424bc0a8b89776bc4a6d5328940fb4156ce50bcf
+=======
+>>>>>>> 269024b (完全修复了更换头像功能)
