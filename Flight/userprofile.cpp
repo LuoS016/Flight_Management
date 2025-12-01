@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QPixmap>
 UserProfile::UserProfile(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::UserProfile)
@@ -55,15 +56,29 @@ void UserProfile::on_pushButton_9_clicked()
 void UserProfile::on_pushButton_5_clicked()
 {
     edit_infor *e=new edit_infor(ui->txt_UserAccount->text(),ui->txt_Username->text(),this);
-    connect(e,&edit_infor::change_name,this,[this](QString name){
-        ui->txt_Username->setText(name);
+    connect(e,&edit_infor::change_name,this,[this](QString old,QString name){
+        if (name==""){
+            ui->txt_Username->setText(old);
+        }else{
+            ui->txt_Username->setText(name);
+        }
+
     });
-    connect(e,&edit_infor::change_jianjie,this,[this](QString jianjie){
-        ui->txt_jianjie->setText(jianjie);
+    connect(e,&edit_infor::change_jianjie,this,[this](QString old,QString jianjie){
+        if (jianjie==""){
+            ui->txt_jianjie->setText(old);
+        }else{
+            ui->txt_jianjie->setText(jianjie);
+        }
+    });
+    connect(e,&edit_infor::change_avatar,this,[this](QPixmap pixmap){
+        ui->label_2->setPixmap(pixmap);
     });
     connect(e, &QDialog::finished, this, [this]{
         this->show();
-        // 或者调用 getData(userID) 重新加载数据库信息
+        if (!this->userID.isEmpty()) {
+            getData(this->userID);
+        }
     });
     this->hide();
     e->exec();
@@ -81,15 +96,31 @@ void UserProfile::getData(const QString &userID)
         return;
     }
     QSqlQuery query;
-    query.prepare("SELECT Username, IDCard, jianjie FROM users WHERE UserID = ?");
+    query.prepare("SELECT Username, IDCard, jianjie,avatar FROM users WHERE UserID = ?");
     query.addBindValue(userID);
+    qDebug() << "查询用户信息，UserID=" << userID;
     if (query.exec() && query.next()) {
         QString username = query.value(0).toString();
         QString idCard = query.value(1).toString();
         QString jianjie = query.value(2).toString();
+        QByteArray avatarData = query.value(3).toByteArray();
+        qDebug() << "读取到头像数据大小：" << avatarData.size() << "字节";
         ui->txt_Username->setText(username);
         ui->txt_UserAccount->setText(idCard);
         ui->txt_jianjie->setText(jianjie);
+        if (!avatarData.isEmpty()) {
+            QPixmap pixmap;
+            if (pixmap.loadFromData(avatarData)) {
+                qDebug() << "成功加载头像，尺寸：" << pixmap.width() << "x" << pixmap.height();
+                ui->label_2->setPixmap(pixmap.scaled(ui->label_2->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            } else {
+                qDebug() << "头像数据加载失败";
+                ui->label_2->clear();
+            }
+        } else {
+            qDebug() << "头像数据为空";
+            ui->label_2->clear();
+        }
     } else {
         QString errorMsg = query.lastError().text();
         if (errorMsg.isEmpty()) {

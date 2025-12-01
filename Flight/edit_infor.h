@@ -17,8 +17,9 @@ public:
     ~edit_infor();
     virtual void accept() override;
 signals:
-    void change_name(QString &newname);
-    void change_jianjie(QString &jianjie);
+    void change_name(QString &oldname,QString &newname);
+    void change_jianjie(QString &oldjianjie,QString &jianjie);
+    void change_avatar(const QPixmap &pixmap);
 private slots:
     void on_buttonBox_accepted();
     void on_pushButton_clicked();
@@ -26,6 +27,9 @@ private slots:
 private:
     QString userID;
     QString username;
+    QPixmap Avatar;
+    QString jianjie;
+    bool avatarChanged;  // 标记用户是否选择了新头像
     Ui::edit_infor *ui;
 };
 

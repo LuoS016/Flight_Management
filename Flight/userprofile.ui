@@ -178,6 +178,9 @@ QLineEdit[readOnly=&quot;true&quot;] {
     <property name="text">
      <string>照片</string>
     </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
