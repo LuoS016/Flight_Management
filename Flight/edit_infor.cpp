@@ -26,11 +26,16 @@ edit_infor::edit_infor(QString userID,QString username,QWidget *parent)
     this->username=username;
     this->userID=userID;
     
+<<<<<<< HEAD
+=======
+    // 从数据库加载当前的简介和头像
+>>>>>>> 424bc0a8b89776bc4a6d5328940fb4156ce50bcf
     if (!QSqlDatabase::database().isOpen()) {
         qDebug() << "数据库未连接，无法加载用户信息";
     } else {
         QSqlQuery query;
         query.prepare("SELECT jianjie, avatar FROM users WHERE IDCard = ?");
+<<<<<<< HEAD
         query.addBindValue(userID); // userID 是身份证号，匹配查询条件
         query.finish();
 
@@ -49,10 +54,21 @@ edit_infor::edit_infor(QString userID,QString username,QWidget *parent)
             if (!avatarVar.isNull() && !avatarVar.toByteArray().isEmpty()) {
                 QByteArray avatarData = avatarVar.toByteArray();
                 qDebug() << "从 LONGBLOB 读取到头像数据，大小：" << avatarData.size() << "字节";
+=======
+        query.addBindValue(userID);
+        if (query.exec() && query.next()) {
+            this->jianjie = query.value(0).toString();
+            ui->new_jianjie->setText(this->jianjie);
+            
+            // 加载当前头像到预览（但不标记为已更改）
+            QByteArray avatarData = query.value(1).toByteArray();
+            if (!avatarData.isEmpty()) {
+>>>>>>> 424bc0a8b89776bc4a6d5328940fb4156ce50bcf
                 QPixmap pixmap;
                 if (pixmap.loadFromData(avatarData)) {
                     this->Avatar = pixmap;
                     ui->label_5->setPixmap(pixmap.scaled(ui->label_5->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+<<<<<<< HEAD
                 } else {
                     qDebug() << "头像数据无效，预览区空白";
                     this->Avatar = QPixmap();
@@ -70,6 +86,13 @@ edit_infor::edit_infor(QString userID,QString username,QWidget *parent)
         }
         query.finish();
     }
+=======
+                }
+            }
+        }
+    }
+    //connect(ui->buttonBox,&QDialogButtonBox::accepted,this,&edit_infor::on_buttonBox_accepted);
+>>>>>>> 424bc0a8b89776bc4a6d5328940fb4156ce50bcf
 }
 void edit_infor:: on_buttonBox_accepted(){
     QString newUsername = ui->new_name->text().trimmed();
@@ -81,6 +104,7 @@ void edit_infor:: on_buttonBox_accepted(){
 void edit_infor::accept()
 {
     QString newUsername = ui->new_name->text().trimmed();
+<<<<<<< HEAD
     QString newJianjie = ui->new_jianjie->text().trimmed();
 
     // 2. 检查数据库连接
@@ -199,6 +223,72 @@ void edit_infor::accept()
     } else {
         qDebug() << "未找到匹配的记录，修改失败";
         QMessageBox::warning(this, "警告", "未找到匹配的用户记录，修改失败！");
+=======
+    QString newjianjie = ui->new_jianjie->text().trimmed();
+
+    if (newUsername.isEmpty()) {
+        return;
+    }
+    QSqlQuery query;
+    QString sql;
+    if (!QSqlDatabase::database().isOpen()) {
+        qDebug() << "数据库未连接，无法修改记录！";
+        return;
+    }
+    query.prepare("SELECT UserID FROM users WHERE IDCard = ?");
+    query.addBindValue(this->userID);
+    if (!query.exec() || !query.next()) {
+        qDebug() << "无法找到用户，IDCard = " << this->userID;
+        QMessageBox::warning(this, "警告", "无法找到用户信息");
+        return;
+    }
+    QString actualUserID = query.value(0).toString();
+    QByteArray avatarData;
+    // 只有用户选择了新头像时才保存（使用avatarChanged标志）
+    qDebug() << "accept()中检查头像，avatarChanged=" << this->avatarChanged << "，this->Avatar.isNull()=" << this->Avatar.isNull() << "，尺寸：" << this->Avatar.width() << "x" << this->Avatar.height();
+    if (this->avatarChanged && !this->Avatar.isNull()) {
+        QBuffer buffer(&avatarData);
+        buffer.open(QIODevice::WriteOnly);
+        this->Avatar.save(&buffer, "PNG");
+        qDebug() << "准备保存新头像，大小：" << avatarData.size() << "字节，Avatar尺寸：" << this->Avatar.width() << "x" << this->Avatar.height();
+    } else {
+        qDebug() << "用户未选择新头像，不更新头像字段（保持数据库中的旧头像）";
+    }
+    if (this->avatarChanged && !this->Avatar.isNull()) {
+        sql = "UPDATE users SET username=?, jianjie=?, avatar=? WHERE UserID=?";
+        query.prepare(sql);
+        query.addBindValue(newUsername);
+        query.addBindValue(newjianjie);
+        query.addBindValue(avatarData);
+        query.addBindValue(actualUserID);
+        qDebug() << "更新用户信息（包含头像），UserID=" << actualUserID;
+    } else {
+        sql = "UPDATE users SET username=?, jianjie=? WHERE UserID=?";
+        query.prepare(sql);
+        query.addBindValue(newUsername);
+        query.addBindValue(newjianjie);
+        query.addBindValue(actualUserID);
+        qDebug() << "更新用户信息（不包含头像），UserID=" << actualUserID;
+    }
+
+    if (!query.exec()) {
+        qDebug() << "修改记录失败：" << query.lastError().text();
+        qDebug() << "执行的 SQL：" << sql;
+        QMessageBox::warning(this, "警告", "执行sql失败");
+        return;
+    }
+    if (query.numRowsAffected() > 0) {
+        qDebug() << "成功修改" << query.numRowsAffected() << "条记录，UserID=" << actualUserID;
+        emit change_name(this->username, newUsername);
+        emit change_jianjie(this->jianjie,newjianjie);
+        if (this->avatarChanged && !this->Avatar.isNull()) {
+            emit change_avatar(this->Avatar);
+        }
+        QDialog::accept();
+    } else {
+        qDebug() << "未找到匹配的记录（或新值与旧值一致），无修改";
+        QMessageBox::warning(this, "警告", "未找到匹配的记录（或新值与旧值一致），无修改");
+>>>>>>> 424bc0a8b89776bc4a6d5328940fb4156ce50bcf
         return;
     }
 }
