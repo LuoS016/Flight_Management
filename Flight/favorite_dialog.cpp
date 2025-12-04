@@ -55,7 +55,7 @@ void favorite_dialog::loadFavorites()
     // 清空现有表格
     ui->tableWidget_favorites->setRowCount(0);
 
-    // 查询收藏夹内容 (直接使用 currentUserID)
+    // 查询收藏夹内容
     QSqlQuery query;
     QString sql = "SELECT t.TicketID, t.TicketType, t.TicketNo, t.DepartureCity, t.ArrivalCity, "
                   "t.DepartureTime, t.ArrivalTime, t.Price, t.Company "

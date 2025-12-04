@@ -63,7 +63,6 @@ void Pay::on_btn_confirm_clicked()
     }
 
     QSqlQuery query;
-    // 使用事务保证安全
     db.transaction();
 
     // 更新 users 表中的 Balance 字段
@@ -88,7 +87,6 @@ void Pay::on_btn_confirm_clicked()
 
 void Pay::on_btn_cancel_clicked()
 {
-    // 用户点击取消时，重置界面并关闭
     resetInterface();
     QMessageBox::information(this, "取消",QString("本次充值已取消"));
 
